@@ -37,10 +37,7 @@ class game ():
 				self.buildTile((r, s), None)
 
 		# init first 2 tiles
-		randomTwosPositions = [
-			(0,1),
-			(0,2),
-		]#[self.generateRandomPosition() for x in range(random.randint(1,2))]
+		randomTwosPositions = [self.generateRandomPosition() for x in range(random.randint(1,2))]
 
 		for pos in randomTwosPositions:
 			self.buildTile(pos, 2)
@@ -77,6 +74,7 @@ class game ():
 				if toMergeTilePosition != None:
 					self.merge(toMergeTilePosition, currentPosition)
 
+		# move tiles as far as possible
 		for x in range(self.size - 2, -1, -1):
 			for y in range(self.size):
 				currentPosition = (x, y)
@@ -125,6 +123,7 @@ class game ():
 				if toMergeTilePosition != None:
 					self.merge(toMergeTilePosition, currentPosition)
 
+		# move tiles as far as possible
 		for x in range(1, self.size):
 			for y in range(self.size):
 				currentPosition = (x, y)
@@ -173,6 +172,7 @@ class game ():
 				if toMergeTilePosition != None:
 					self.merge(toMergeTilePosition, currentPosition)
 
+		# move tiles as far as possible
 		for x in range(self.size):
 			for y in range(1, self.size):
 				currentPosition = (x, y)
@@ -221,6 +221,7 @@ class game ():
 				if toMergeTilePosition != None:
 					self.merge(toMergeTilePosition, currentPosition)
 
+		# move tiles as far as possible
 		for x in range(self.size):
 			for y in range(self.size - 2, -1, -1):
 				currentPosition = (x, y)
