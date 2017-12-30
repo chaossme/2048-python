@@ -2,10 +2,12 @@ import tkinter, random
 from variables import *
 
 class game ():
+
 	def __init__ (self, size = 4):
 
 		self.size = size
 		self.canvasWidth, self.canvasHeight, self.margin, self.tileMargin = 500, 500, 20, 10
+		self.score = 0
 
 		self.tileSizeR = ((self.canvasWidth - 2 * self.margin) / self.size) / 2
 
@@ -27,9 +29,8 @@ class game ():
 			outline = '#bbada0',
 		)
 
-		self.grid = []
-
 		# build empty grid
+		self.grid = []
 		for r in range(size):
 			self.grid.append([])
 			for s in range(size):
@@ -96,7 +97,7 @@ class game ():
 				self.buildTile(currentPosition, None)
 				self.buildTile(toMovePosition, currentValue)
 
-		self.buildRandomTile()
+		self.afterEach()
 
 	def onLeft (self, event):
 		
@@ -145,7 +146,7 @@ class game ():
 				self.buildTile(currentPosition, None)
 				self.buildTile(toMovePosition, currentValue)
 
-		self.buildRandomTile()
+		self.afterEach()
 
 	def onUp (self, event):
 		
@@ -194,7 +195,7 @@ class game ():
 				self.buildTile(currentPosition, None)
 				self.buildTile(toMovePosition, currentValue)
 
-		self.buildRandomTile()
+		self.afterEach()
 
 	def onDown (self, event):
 		
@@ -243,11 +244,13 @@ class game ():
 				self.buildTile(currentPosition, None)
 				self.buildTile(toMovePosition, currentValue)
 
-		self.buildRandomTile()
+		self.afterEach()
 
 	def merge (self, fromPosition, toPosition):
+		newValue = self.getValue(toPosition) * 2
 		self.buildTile(fromPosition, None)
-		self.buildTile(toPosition, self.getValue(toPosition) * 2)
+		self.buildTile(toPosition, newValue)
+		self.score += newValue
 
 	def getTileBackground (self, value):
 		return tileColors[value]
@@ -272,7 +275,7 @@ class game ():
 			self.fieldDict['startingPoint'][1] + (self.tileSizeR * 2) * position[1] + self.tileSizeR,
 		)
 
-		backgroundColor = self.getTileBackground(value) # pozadie kocky podla hodnoty kocky
+		backgroundColor = self.getTileBackground(value)
 
 		self.canvas.create_rectangle(
 			(midpoint[0] - self.tileSizeR, midpoint[1] - self.tileSizeR),
@@ -282,7 +285,6 @@ class game ():
 			tag = 'tile{}'.format(str(position[1] * self.size + position[0])),
 		)
 
-		# pokial ma kocka hodnotu, vypis ju
 		if value:
 			self.canvas.create_text(midpoint, text = value)
 
@@ -301,5 +303,12 @@ class game ():
 		# TODO: CHECK GAME OVER
 
 		self.buildTile(random.choice(emptyTiles), 2)
+
+	def writeScore (self):
+		print('score:', self.score)
+
+	def afterEach (self):
+		self.buildRandomTile()
+		self.writeScore()
 
 game()
