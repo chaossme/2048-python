@@ -8,17 +8,18 @@ class game ():
 		self.size = size
 		self.canvasWidth, self.canvasHeight, self.margin, self.tileMargin = 500, 500, 20, 10
 		self.score = 0
+		self.topHeight = 50
 
 		self.tileSizeR = ((self.canvasWidth - 2 * self.margin) / self.size) / 2
 
 		self.canvas = tkinter.Canvas(
 			width = self.canvasWidth,
-			height = self.canvasHeight,
+			height = self.canvasHeight + self.topHeight,
 		)
 		self.canvas.pack()
 
 		self.fieldDict = {
-			'startingPoint': (self.margin, self.margin),
+			'startingPoint': (self.margin, self.margin + self.topHeight),
 			'endingPoint': (self.canvasWidth - self.margin, self.canvasHeight - self.margin),
 		}
 
@@ -27,6 +28,13 @@ class game ():
 			self.fieldDict['endingPoint'],
 			fill = '#bbada0',
 			outline = '#bbada0',
+		)
+
+		self.scoreText = self.canvas.create_text(
+			self.margin,
+			self.margin,
+			text = 'score: {}'.format(self.score),
+			anchor = tkinter.SW
 		)
 
 		# build empty grid
@@ -305,7 +313,10 @@ class game ():
 		self.buildTile(random.choice(emptyTiles), 2)
 
 	def writeScore (self):
-		print('score:', self.score)
+		self.canvas.itemconfigure(
+			self.scoreText,
+			text = 'score: {}'.format(self.score)
+		)
 
 	def afterEach (self):
 		self.buildRandomTile()
